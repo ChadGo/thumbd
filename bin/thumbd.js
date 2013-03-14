@@ -11,6 +11,7 @@ var thumbd = require('../lib'),
 		aws_key: process.env.AWS_KEY,
 		aws_secret: process.env.AWS_SECRET,
 		sqs_queue: process.env.SQS_QUEUE,
+		sqs_host: process.env.SQS_HOST,
 		bucket: process.env.BUCKET,
 		tmp_dir: (process.env.tmp_dir || '/tmp')
 	},
@@ -18,8 +19,9 @@ var thumbd = require('../lib'),
 		aws_key: process.env.AWS_KEY,
 		aws_secret: process.env.AWS_SECRET,
 		sqs_queue: process.env.SQS_QUEUE,
+		sqs_host: process.env.SQS_HOST,
 		descriptions: "./data/example.json",
-		remote_image: null
+		remote_image: process.env.REMOTE_IMAGE
 	};
 
 function buildOpts(opts) {
@@ -64,7 +66,8 @@ switch (mode) {
 				grabber: grabber,
 				aws_key: opts.aws_key,
 				aws_secret: opts.aws_secret,
-				sqs_queue: opts.sqs_queue
+				sqs_queue: opts.sqs_queue,
+				sqs_host: opts.sqs_host
 			})).start();
 
 		} else {
@@ -80,7 +83,7 @@ switch (mode) {
 			var sqs = aws.createSQSClient(
 				opts.aws_key,
 				opts.aws_secret,
-				{'path': opts.sqs_queue}
+				{'path': opts.sqs_queue, 'host': opts.sqs_host}
 			);
 			
 			/**
